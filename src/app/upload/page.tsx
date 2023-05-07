@@ -2,9 +2,10 @@
 import React, { useState, useRef } from "react";
 import { BiCloud, BiMusic, BiPlus } from "react-icons/bi";
 import { create } from "ipfs-http-client";
-import saveToIPFS from "../../../utils/saveToIPFS";
-import { createAsset } from "@livepeer/react";
-import getContract from "../../../utils/getContract";
+//import saveToIPFS from "../../../utils/saveToIPFS";
+import getWeb3 from "../../../utils/getWeb3";
+import useAction from "../../../build/contracts/UserActions.json";
+
 import { debug } from "console";
 import axios from "axios";
 
@@ -23,50 +24,69 @@ export default function Upload() {
 
 
   const finalAttempt = async () => {
-    console.log("--video",video);
-    const ipfs = create({url: "/ip4/127.0.0.1/tcp/5001"});
+    console.log('idhar hich hai apun');
+    const web3 = await getWeb3();
+    console.log('idhar hich hai apun');
+    //   // Use web3 to get the user's accounts.
+    const accounts = await web3.eth.getAccounts();
+    console.log(accounts)
+    const networkId = await web3.eth.net.getId();
+    console.log(networkId);
+    const deployedNetwork = (useAction as any).networks[networkId];
+    console.log("---",web3);
+    const instance = new web3.eth.Contract(
+      useAction.abi,
+      deployedNetwork && deployedNetwork.address,
+    );
+
+    console.log("----", deployedNetwork, instance);
+    console.log("--video", video);
+    const ipfs = create({ url: "/ip4/127.0.0.1/tcp/5001" });
 
     const result = await ipfs.add(video);
-    console.log('---',result);
+    console.log('---', result);
+
 
   }
 
   // When a user clicks on the upload button
 
   // Function to upload the video to IPFS
-  const uploadThumbnail = async () => {
-    // Passing the file to the saveToIPFS function and getting the CID
-    const cid = await saveToIPFS(thumbnail);
-    // Returning the CID
-    return cid;
-  };
+  // const uploadThumbnail = async () => {
+  //   // Passing the file to the saveToIPFS function and getting the CID
+  //   const cid = await saveToIPFS(thumbnail);
+  //   // Returning the CID
+  //   return cid;
+  // };
 
   // Function to upload the video to Livepeer
-  const uploadVideo = async () => {
-    // Calling the createAsset function from the useCreateAsset hook to upload the video
-    createAsset({
-      name: title,
-      file: video,
-    } as any);
-  };
+  // const uploadVideo = async () => {
+  //   // Calling the createAsset function from the useCreateAsset hook to upload the video
+  //   createAsset({
+  //     name: title,
+  //     file: video,
+  //   } as any);
+  // };
 
   // Function to save the video to the Contract
-  const saveVideo = async (data) => {
-    // Get the contract from the getContract function
-    let contract = await getContract();
+  // const saveVideo = async (data) => {
+  //   // Get the contract from the getContract function
+  //   let contract = await getContract();
 
-    // Upload the video to the contract
-    await contract.uploadVideo(
-      data.video,
-      data.title,
-      data.description,
-      data.location,
-      data.category,
-      data.thumbnail,
-      false,
-      data.UploadedDate
-    );
-  };
+  //   console.log()
+
+  //   // Upload the video to the contract
+  //   // await contract.uploadVideo(
+  //   //   data.video,
+  //   //   data.title,
+  //   //   data.description,
+  //   //   data.location,
+  //   //   data.category,
+  //   //   data.thumbnail,
+  //   //   false,
+  //   //   data.UploadedDate
+  //   // );
+  // };
 
 
   return (
@@ -192,7 +212,7 @@ export default function Upload() {
           type="file"
           className="hidden"
           ref={videoRef}
-          accept={"*"}
+          accept={"video/*"}
           onChange={(e) => {
             setVideo(e.target.files[0]);
             console.log(e.target.files[0]);
