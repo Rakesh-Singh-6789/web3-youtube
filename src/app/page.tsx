@@ -1,22 +1,18 @@
 'use client'
 import React from "react";
-import { useRouter } from 'next/navigation';
 import LandingPage from "./dapp/page";
 import dynamic from "next/dynamic";
 import Link from "next/link";
+import { useRouter } from 'next/router';
 
 
-const LandingPageWithNoSSR : any = dynamic(
-  () => import('./dapp/page'),
-  { ssr: false }
-)
+// const LandingPageWithNoSSR : any = dynamic(
+//   () => import('./dapp/page'),
+//   { ssr: false }
+// )
 
 
 export default function index() {
-  const router = useRouter();
-  function handleClick() {
-    return <><LandingPageWithNoSSR /></>;
-  }
   return (
     <>
       <div className="flex flex-col justify-center items-center h-screen">

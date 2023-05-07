@@ -1,13 +1,15 @@
 'use client'
-import React, { useState } from "react";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import Link from "next/link";
+import { useRouter } from 'next/navigation';
+import React from "react";
+import { useState } from "react";
 
 function LandingPage() {
+  const router = useRouter();
   // Creating a function to connect user's wallet
   const connectWallet = async () => {
     try {
       const { ethereum } = window;
-
       // Checking if user have Metamask installed
       if (!ethereum) {
         // If user doesn't have Metamask installed, throw an error
@@ -22,6 +24,11 @@ function LandingPage() {
 
       // At last save the user's wallet address in browser's local storage
       localStorage.setItem("walletAddress", accounts[0]);
+      
+
+      setTimeout(() => {
+        router.push("/upload");
+      }, 500);
     } catch (error) {
       console.log(error);
     }
@@ -58,6 +65,7 @@ function LandingPage() {
                   onClick={() => {
                     // Calling the connectWallet function when user clicks on the button
                     connectWallet();
+                    //alert();
                   }}
                 >
                   <span>Connect wallet</span>
