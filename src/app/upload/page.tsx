@@ -5,6 +5,8 @@ import { create } from "ipfs-http-client";
 import saveToIPFS from "../../../utils/saveToIPFS";
 import { createAsset } from "@livepeer/react";
 import getContract from "../../../utils/getContract";
+import { debug } from "console";
+import axios from "axios";
 
 export default function Upload() {
   // Creating state for the input field
@@ -12,32 +14,24 @@ export default function Upload() {
   const [description, setDescription] = useState("");
   const [category, setCategory] = useState("");
   const [location, setLocation] = useState("");
-  const [thumbnail, setThumbnail] : any = useState("");
-  const [video, setVideo] : any = useState("");
+  const [thumbnail, setThumbnail]: any = useState("");
+  const [video, setVideo]: any = useState("");
 
   //  Creating a ref for thumbnail and video
   const thumbnailRef = useRef();
   const videoRef = useRef();
 
+
+  const finalAttempt = async () => {
+    console.log("--video",video);
+    const ipfs = create({url: "/ip4/127.0.0.1/tcp/5001"});
+
+    const result = await ipfs.add(video);
+    console.log('---',result);
+
+  }
+
   // When a user clicks on the upload button
-  const handleSubmit = async () => {
-    // Calling the upload video function
-    await uploadVideo();
-    // Calling the upload thumbnail function and getting the CID
-    const thumbnailCID = await uploadThumbnail();
-    // Creating a object to store the metadata
-    let data = {
-      video: asset?.id,
-      title,
-      description,
-      location,
-      category,
-      thumbnail: thumbnailCID,
-      UploadedDate: Date.now(),
-    };
-    // Calling the saveVideo function and passing the metadata object
-    await saveVideo(data);
-  };
 
   // Function to upload the video to IPFS
   const uploadThumbnail = async () => {
@@ -53,7 +47,7 @@ export default function Upload() {
     createAsset({
       name: title,
       file: video,
-    }as any);
+    } as any);
   };
 
   // Function to save the video to the Contract
@@ -85,7 +79,7 @@ export default function Upload() {
             </button>
             <button
               onClick={() => {
-                handleSubmit();
+                finalAttempt();
               }}
               className="bg-blue-500 hover:bg-blue-700 text-white  py-2  rounded-lg flex px-4 justify-between flex-row items-center"
             >
@@ -198,7 +192,7 @@ export default function Upload() {
           type="file"
           className="hidden"
           ref={videoRef}
-          accept={"video/*"}
+          accept={"*"}
           onChange={(e) => {
             setVideo(e.target.files[0]);
             console.log(e.target.files[0]);
