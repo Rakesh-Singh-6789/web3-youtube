@@ -2,6 +2,9 @@
 import React, { useState, useRef } from "react";
 import { BiCloud, BiMusic, BiPlus } from "react-icons/bi";
 import { create } from "ipfs-http-client";
+import saveToIPFS from "../../../utils/saveToIPFS";
+import { createAsset } from "@livepeer/react";
+import getContract from "../../../utils/getContract";
 
 export default function Upload() {
   // Creating state for the input field
@@ -16,9 +19,61 @@ export default function Upload() {
   const thumbnailRef = useRef();
   const videoRef = useRef();
 
-    function handleSubmit() {
-        throw new Error("Function not implemented.");
-    }
+  // When a user clicks on the upload button
+  const handleSubmit = async () => {
+    // Calling the upload video function
+    await uploadVideo();
+    // Calling the upload thumbnail function and getting the CID
+    const thumbnailCID = await uploadThumbnail();
+    // Creating a object to store the metadata
+    let data = {
+      video: asset?.id,
+      title,
+      description,
+      location,
+      category,
+      thumbnail: thumbnailCID,
+      UploadedDate: Date.now(),
+    };
+    // Calling the saveVideo function and passing the metadata object
+    await saveVideo(data);
+  };
+
+  // Function to upload the video to IPFS
+  const uploadThumbnail = async () => {
+    // Passing the file to the saveToIPFS function and getting the CID
+    const cid = await saveToIPFS(thumbnail);
+    // Returning the CID
+    return cid;
+  };
+
+  // Function to upload the video to Livepeer
+  const uploadVideo = async () => {
+    // Calling the createAsset function from the useCreateAsset hook to upload the video
+    createAsset({
+      name: title,
+      file: video,
+    }as any);
+  };
+
+  // Function to save the video to the Contract
+  const saveVideo = async (data) => {
+    // Get the contract from the getContract function
+    let contract = await getContract();
+
+    // Upload the video to the contract
+    await contract.uploadVideo(
+      data.video,
+      data.title,
+      data.description,
+      data.location,
+      data.category,
+      data.thumbnail,
+      false,
+      data.UploadedDate
+    );
+  };
+
 
   return (
     <div className="w-full h-screen bg-[#1a1c1f] flex flex-row">
