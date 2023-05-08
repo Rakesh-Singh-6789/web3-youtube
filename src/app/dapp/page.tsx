@@ -52,7 +52,7 @@ function LandingPage() {
         router.push("/signUp");
       } else {
         setTimeout(() => {
-          router.push("/upload");
+          router.push("/listVideos");
         }, 500);
       }
     } catch (error) {

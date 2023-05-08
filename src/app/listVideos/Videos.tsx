@@ -35,6 +35,22 @@ const Videos = () => {
     fetchData();
   }, []);
 
+  function getTime(timestamp: any) {
+    const timeAgo = new Date(timestamp*1000);
+    const now = new Date();
+    const diff = Math.abs(now.getTime() - new Date(timestamp).getTime());
+    const hoursAgo = Math.floor(diff / (1000 * 60 * 60));
+    const daysAgo = Math.floor(hoursAgo / 24);
+  
+    return (
+      <span>
+        {daysAgo > 0
+          ? `${daysAgo} day${daysAgo > 1 ? 's' : ''} ago`
+          : `${hoursAgo} hour${hoursAgo > 1 ? 's' : ''} ago`}
+      </span>
+    );
+  }
+
   return (
     <Stack direction="row" flexWrap="wrap" justifyContent="start" alignItems="start" gap={2}>
       {
@@ -43,17 +59,18 @@ const Videos = () => {
           <Loader />
           :
           (videos as any).map((item: any, idx: any) => {
-            return (<Box  key={idx} className="w-3/12">
-              {console.log("---item", item)}
-              {/* <pre>{item}</pre> */}
-              <div className="flex flex-row w-12/12">
-              <ReactPlayer width="100%"
-                height="100%" url={`https://ipfs.io/ipfs/${item.IPFSHash}`} controls={true} />
+            return (<Box  key={idx} className="w-3/12 ms-20">
+              <div className="relative h-0 pb-56">
+                <ReactPlayer className="absolute top-0 left-0" width="100%"
+                  height="100%" url={`https://ipfs.io/ipfs/${item.IPFSHash}`} controls={true} />
               </div>
-
-              
-              {/* <iframe src={`https://ipfs.video/gw/${item.IPFSHash}`} title="My iFrame" width="100%" height="500" frameBorder="0"></iframe> */}
-              <br></br>
+              <div className="">
+                  <p className="flex text-[#9CA3AF]  text-sm">name: {item.name}
+                    <p className="ms-auto text-[#9CA3AF]  text-sm">{getTime(item.publishedOn)}</p>
+                  </p>
+                  <p className="text-[#9CA3AF]  text-sm">desciption: {item.description}</p>
+                  
+                </div>
             </Box>);
           })
       }
