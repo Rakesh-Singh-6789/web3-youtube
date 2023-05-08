@@ -10,12 +10,14 @@ contract UserStore {
 
     mapping(address => User) public users;
     
+    address[] public activeUsers; 
     
 
 
     function _addUser(string memory _name, string memory _bio, uint _age, string memory _city) internal {
         require(checkUserExists(msg.sender) == false, "You are already signedUp");
         users[msg.sender] = User(_name,_bio,_age,_city,block.timestamp);
+        activeUsers.push(msg.sender);
         
     }
 

@@ -37,5 +37,8 @@ contract UserActions is UserStore, VideoStore {
         _addComment(uniqueId, comment, msg.sender);
         emit addCommentEvent(uniqueId, comment);
     }
+    function getAllVideos() internal returns (Video[] memory){
+        return _getAllVideos(activeUsers);
+    }
 
 }

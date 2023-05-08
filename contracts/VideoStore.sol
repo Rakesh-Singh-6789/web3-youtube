@@ -19,9 +19,11 @@ contract VideoStore  {
 
     mapping(string => Comment[]) public comment;
     mapping(address=> Video[]) public userToVideo;
+    uint totalVideos = 0;
     function _addVideo(string memory _name, string memory _description, string memory _IPFSHash) internal returns (string memory) {
         string memory uniqueId = string.concat(Strings.toHexString(uint256(uint160(msg.sender)), 20),_IPFSHash,Strings.toHexString(block.timestamp));
         userToVideo[msg.sender].push(Video(_name,_description,block.timestamp,_IPFSHash,uniqueId));
+        totalVideos++;
         return uniqueId;
     }
 
@@ -46,5 +48,20 @@ contract VideoStore  {
 
     function _addComment(string memory _unqiueId, string memory _comment, address _userAddress) internal {
         comment[_unqiueId].push(Comment(_comment,_userAddress,block.timestamp));
+    }
+
+    function _getAllVideos(address[] memory addr) internal view returns (Video[] memory){
+        Video[] memory allVideos = new Video[](totalVideos);
+        uint k=0;
+        for(uint i=0;i<addr.length;i++)
+        {
+            for(uint j=0;j<userToVideo[addr[i]].length;j++)
+            {
+                allVideos[k]=userToVideo[addr[i]][j];
+                k++;
+            }
+            
+        }
+        return allVideos;
     }
 }
