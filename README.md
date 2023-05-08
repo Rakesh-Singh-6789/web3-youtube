@@ -7,7 +7,7 @@
 | Sai Kumar Reddy Bandi | 885175166 | bsaikumarreddy@csu.fullerton.edu |
 | Shridhar Bhardwaj     | 885866160 | shree@csu.fullerton.edu          |
 
-## Implementation 
+## Implementation (Done from scratch, haven't referred any sources for starter code)
 
 1. Developed smart contracts to store UserInfo
 2. Developed smart contracts to store VideoData
