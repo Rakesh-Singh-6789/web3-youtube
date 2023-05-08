@@ -6,8 +6,6 @@ import { create } from "ipfs-http-client";
 import getWeb3 from "../../../utils/getWeb3";
 import useAction from "../../../build/contracts/UserActions.json";
 
-import { debug } from "console";
-import axios from "axios";
 
 export default function Upload() {
   // Creating state for the input field
@@ -26,16 +24,17 @@ export default function Upload() {
   const finalAttempt = async () => {
     console.log('idhar hich hai apun');
     const web3 = await getWeb3();
+    console.log(web3);
     console.log('idhar hich hai apun');
     //   // Use web3 to get the user's accounts.
     const accounts = await web3.eth.getAccounts();
-    console.log(accounts)
+   
     const networkId = await web3.eth.net.getId();
     console.log(networkId);
     const deployedNetwork = (useAction as any).networks[networkId];
     console.log("---",web3);
     const instance = new web3.eth.Contract(
-      useAction.abi,
+      (useAction as any).abi,
       deployedNetwork && deployedNetwork.address,
     );
 
@@ -45,7 +44,9 @@ export default function Upload() {
 
     const result = await ipfs.add(video);
     console.log('---', result);
-
+    console.log(accounts[0])
+    const dataaa = await instance.methods.checkUserExists(accounts[0]).call();
+    console.log("final commit ment",dataaa);
 
   }
 

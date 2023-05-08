@@ -28,7 +28,7 @@ contract UserStore {
         return (user.name, user.bio, user.age, user.city);
     }
 
-    function checkUserExists(address a) internal view returns (bool) {
+    function checkUserExists(address a) public view returns (bool) {
         if(users[a].memberSince == 0)
         {
             return false;
