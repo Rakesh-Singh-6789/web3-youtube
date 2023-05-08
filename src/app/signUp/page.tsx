@@ -37,7 +37,7 @@ export default function signUp() {
         console.log("----", deployedNetwork, instance);
         const dataaa = await instance.methods.addUser(name, bio, age, city).send({from: accounts[0]});
         if(dataaa.status) {
-            router.push('/upload');
+            router.push('/listVideos');
         } else {
             console.log("Error: Signup error");
         }

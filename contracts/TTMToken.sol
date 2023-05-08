@@ -15,7 +15,6 @@ contract TTMToken is ERC20 {
     function transfer(address recipient, uint256 amount) public override returns (bool) {
         require(recipient != address(this), "Cannot transfer to the contract itself");
         require(balanceOf(msg.sender) >= amount, "Not enough balance to transfer");
-        _burn(msg.sender, amount);
         _transfer(msg.sender, recipient, amount);
         return true;
     }

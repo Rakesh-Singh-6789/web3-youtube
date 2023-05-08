@@ -5,6 +5,7 @@ import { create } from "ipfs-http-client";
 //import saveToIPFS from "../../../utils/saveToIPFS";
 import getWeb3 from "../../../utils/getWeb3";
 import useAction from "../../../build/contracts/UserActions.json";
+import TTMToken from "../../../build/contracts/TTMToken.json";
 import { useRouter } from "next/navigation";
 import { getInstance } from "../upload/page";
 import { Box, Stack, Typography } from "@mui/material";
@@ -13,18 +14,47 @@ import Navbar from "./Navbar";
 import Sidebar from "./Sidebar";
 
 
-export default function listVideos() {
-    const [videos, setVideos] = useState([]);
-    useEffect(() => {
-        console.log("--newArray", videos);
-      }, [videos]);
 
-    // const getVideos = async () => {
-    //     const { instance, accounts } = await getInstance();
-    //     const dataaa = await instance.methods.getAllVideos().call();
-    //     console.log("--dattta",dataaa);
-    //     setVideos(() => [...videos,dataaa] as any);
-    // }
+export const getTokenInstance:any = async () => {
+    console.log('idhar hich hai apun');
+      const web3 = await getWeb3();
+      console.log(web3);
+      console.log('idhar hich hai apun');
+      //   // Use web3 to get the user's accounts.
+      const accounts = await web3.eth.getAccounts();
+     
+      const networkId = await web3.eth.net.getId();
+      console.log(networkId);
+      const deployedNetwork = (TTMToken as any).networks[networkId];
+      console.log("---",web3);
+      const instance = new web3.eth.Contract(
+        (TTMToken as any).abi,
+        deployedNetwork && deployedNetwork.address,
+      );
+      console.log("----", deployedNetwork, instance);
+      return {instance, accounts};
+  }
+
+const buyToken = async () => {
+    const { instance, accounts } = await getTokenInstance();
+    const buy = await instance.methods.mint().send({value:1,from:accounts[0]});
+    console.log("---buy",buy);
+}
+
+
+
+
+export default function listVideos() {
+    const [balance, setBalance] = useState(0);
+    useEffect(() => {
+        const fetchData = async () => {
+            const { instance, accounts } = await getTokenInstance();
+            const balance = await instance.methods.balanceOf(accounts[0]).call();
+            console.log("--dattta1", balance);
+            setBalance(balance);
+          };
+          fetchData();
+      }, [balance]);
     
     return (
         <div className="bg-gray-800 ">
@@ -41,6 +71,17 @@ export default function listVideos() {
                     <Typography variant="h4" fontWeight="bold" mb={2} sx={{ color: "white" }}>
                         <span style={{ color: "#FC1503" }} >Videos</span>
                         <Videos />
+                        <div>
+                            <button onClick={()=>{
+                                buyToken();
+                            }}>
+                                Buy
+                            </button>   
+                            <span>{balance}
+                            </span>
+                        </div>
+                        
+
                     </Typography>
                 </Box>
             </Stack>
