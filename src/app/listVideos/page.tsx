@@ -19,12 +19,12 @@ export default function listVideos() {
         console.log("--newArray", videos);
       }, [videos]);
 
-    const getVideos = async () => {
-        const { instance, accounts } = await getInstance();
-        const dataaa = await instance.methods.getAllVideos().call();
-        console.log("--dattta",dataaa);
-        setVideos(() => [...videos,dataaa] as any);
-    }
+    // const getVideos = async () => {
+    //     const { instance, accounts } = await getInstance();
+    //     const dataaa = await instance.methods.getAllVideos().call();
+    //     console.log("--dattta",dataaa);
+    //     setVideos(() => [...videos,dataaa] as any);
+    // }
     
     return (
         <div className="bg-gray-800 ">
@@ -39,14 +39,8 @@ export default function listVideos() {
 
                 <Box className="mt-10" p={2} sx={{ overflowY: "auto", height: "90vh", flex: 2 }}>
                     <Typography variant="h4" fontWeight="bold" mb={2} sx={{ color: "white" }}>
-                        <span style={{ color: "#FC1503" }} onClick={async () => { 
-                            await getVideos();
-                            console.log("---videosNiche",videos);
-                            setTimeout(() => {
-                            console.log("--jaa bi rha",videos);
-                            return <Videos videos={videos} />    
-                        }, 3000);
-                         }}>Videos</span>
+                        <span style={{ color: "#FC1503" }} >Videos</span>
+                        <Videos />
                     </Typography>
                 </Box>
             </Stack>
