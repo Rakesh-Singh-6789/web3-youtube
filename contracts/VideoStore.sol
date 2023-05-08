@@ -9,6 +9,7 @@ contract VideoStore  {
         uint publishedOn;
         string IPFSHash;
         string uniqueId;
+        address userAddress;
     }
 
     struct Comment {
@@ -22,7 +23,7 @@ contract VideoStore  {
     uint totalVideos = 0;
     function _addVideo(string memory _name, string memory _description, string memory _IPFSHash) internal returns (string memory) {
         string memory uniqueId = string.concat(Strings.toHexString(uint256(uint160(msg.sender)), 20),_IPFSHash,Strings.toHexString(block.timestamp));
-        userToVideo[msg.sender].push(Video(_name,_description,block.timestamp,_IPFSHash,uniqueId));
+        userToVideo[msg.sender].push(Video(_name,_description,block.timestamp,_IPFSHash,uniqueId,msg.sender));
         totalVideos++;
         return uniqueId;
     }
@@ -43,7 +44,7 @@ contract VideoStore  {
     function _updateVideo(string memory _name, string memory _description, string memory _IPFSHash,uint _timestamp) internal {
         int index = _getVideoIndex(msg.sender, _IPFSHash, _timestamp);
         require( index > -1,"You are not authorized to update this!");
-        userToVideo[msg.sender][uint(index)] = Video({name:_name, description:_description, publishedOn: userToVideo[msg.sender][uint(index)].publishedOn, IPFSHash:userToVideo[msg.sender][uint(index)].IPFSHash,uniqueId:userToVideo[msg.sender][uint(index)].uniqueId});
+        userToVideo[msg.sender][uint(index)] = Video({name:_name, description:_description, publishedOn: userToVideo[msg.sender][uint(index)].publishedOn, IPFSHash:userToVideo[msg.sender][uint(index)].IPFSHash,uniqueId:userToVideo[msg.sender][uint(index)].uniqueId,userAddress:userToVideo[msg.sender][uint(index)].userAddress});
     }
 
     function _addComment(string memory _unqiueId, string memory _comment, address _userAddress) internal {
