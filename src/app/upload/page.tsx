@@ -43,9 +43,10 @@ export default function Upload() {
     const ipfs = create({ url: "/ip4/127.0.0.1/tcp/5001" });
 
     const result = await ipfs.add(video);
+    const ipfsHash = result.path;
     console.log('---', result);
     console.log(accounts[0])
-    const dataaa = await instance.methods.checkUserExists(accounts[0]).call();
+    const dataaa = await instance.methods.addVideo(title, description, ipfsHash).send({from: accounts[0]});
     console.log("final commit ment",dataaa);
 
   }

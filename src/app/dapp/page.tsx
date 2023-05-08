@@ -3,6 +3,9 @@ import Link from "next/link";
 import { useRouter } from 'next/navigation';
 import React from "react";
 import { useState } from "react";
+import getWeb3 from "../../../utils/getWeb3";
+import useAction from "../../../build/contracts/UserActions.json";
+
 
 function LandingPage() {
   const router = useRouter();
@@ -24,11 +27,34 @@ function LandingPage() {
 
       // At last save the user's wallet address in browser's local storage
       localStorage.setItem("walletAddress", accounts[0]);
-      
 
-      setTimeout(() => {
-        router.push("/upload");
-      }, 500);
+      console.log('in wallet');
+      const web3 = await getWeb3();
+      console.log(web3);
+      //   // Use web3 to get the user's accounts.
+      //const accountsTemp = await web3.eth.getAccounts();
+
+      const networkId = await web3.eth.net.getId();
+
+      console.log(networkId);
+      const deployedNetwork = (useAction as any).networks[networkId];
+      console.log("---", web3);
+      const instance = new web3.eth.Contract(
+        (useAction as any).abi,
+        deployedNetwork && deployedNetwork.address,
+      );
+
+      console.log(accounts[0])
+
+      const dataaa = await instance.methods.checkUserExists(accounts[0]).call();
+      console.log("user exists", dataaa);
+      if (!dataaa) {
+        router.push("/signUp");
+      } else {
+        setTimeout(() => {
+          router.push("/upload");
+        }, 500);
+      }
     } catch (error) {
       console.log(error);
     }
@@ -45,7 +71,7 @@ function LandingPage() {
                 className="text-5xl text-white md:text-6xl font-extrabold leading-tighter tracking-tighter mb-4"
                 data-aos="zoom-y-out"
               >
-                Join the Decentralized Video Revolution With{  " "}
+                Join the Decentralized Video Revolution With{" "}
                 <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-500 to-teal-400">
                   Decentralized-YouTube
                 </span>
