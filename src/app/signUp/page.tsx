@@ -5,6 +5,7 @@ import { create } from "ipfs-http-client";
 //import saveToIPFS from "../../../utils/saveToIPFS";
 import getWeb3 from "../../../utils/getWeb3";
 import useAction from "../../../build/contracts/UserActions.json";
+import { useRouter } from "next/navigation";
 
 export default function signUp() {
 
@@ -12,6 +13,7 @@ export default function signUp() {
     const [bio, setBio] = useState("");
     const [city, setCity] = useState("");
     const [age, setAge] = useState("");
+    const router = useRouter();
 
 
     const signUp = async () => {
@@ -34,6 +36,12 @@ export default function signUp() {
 
         console.log("----", deployedNetwork, instance);
         const dataaa = await instance.methods.addUser(name, bio, age, city).send({from: accounts[0]});
+        if(dataaa.status) {
+            router.push('/upload');
+        } else {
+            console.log("Error: Signup error");
+        }
+       
         console.log("final commit ment",dataaa);
     }
 

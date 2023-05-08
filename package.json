@@ -10,6 +10,11 @@
   },
   "dependencies": {
     "@apollo/client": "^3.7.14",
+    "@emotion/react": "^11.10.0",
+    "@emotion/styled": "^11.10.0",
+    "@mui/icons-material": "^5.8.4",
+    "@mui/material": "^5.9.3",
+    "react-player": "^2.10.1",
     "@livepeer/react": "^2.4.3",
     "@openzeppelin/contracts": "^4.8.3",
     "@types/node": "20.1.0",
