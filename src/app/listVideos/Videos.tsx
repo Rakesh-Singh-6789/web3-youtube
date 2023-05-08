@@ -3,6 +3,8 @@ import { Stack, Box } from "@mui/material";
 
 import Loader from "./Loader";
 import { getInstance } from "../upload/page";
+import ReactPlayer from 'react-player';
+
 
 const Videos = () => {
   //const [videos, setVideo] = useState([""]);
@@ -35,9 +37,12 @@ useEffect(() => {
   
   return (
     <Stack direction="row" flexWrap="wrap" justifyContent="start" alignItems="start" gap={2}>
-      {(videos as any).map((item: any, idx: any) => (
+      {(videos[0] as any).map((item: any, idx: any) => (
         <Box key={idx}>
-          <h1>{item}</h1>
+          {console.log("---item",item)}
+          {/* <pre>{item}</pre> */}
+          <ReactPlayer url={`https://ipfs.io/ipfs/${item.IPFSHash}`} controls={true} />
+          {/* <iframe src={`https://ipfs.video/gw/${item.IPFSHash}`} title="My iFrame" width="100%" height="500" frameBorder="0"></iframe> */}
           <br></br>
         </Box>
       ))}
