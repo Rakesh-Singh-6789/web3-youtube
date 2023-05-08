@@ -6,6 +6,7 @@ import { create } from "ipfs-http-client";
 import getWeb3 from "../../../utils/getWeb3";
 import useAction from "../../../build/contracts/UserActions.json";
 import { RouteMatcher } from "next/dist/server/future/route-matchers/route-matcher";
+import { useRouter } from "next/navigation";
 
 export const getInstance = async () => {
   console.log('idhar hich hai apun');
@@ -42,6 +43,7 @@ export default function Upload() {
   //  Creating a ref for thumbnail and video
   const thumbnailRef = useRef();
   const videoRef = useRef();
+  const router = useRouter();
 
   
 
@@ -84,7 +86,7 @@ export default function Upload() {
 
 
   function RouteToListPage() {
-
+    router.push('/listVideos');
   }
 
   // When a user clicks on the upload button
