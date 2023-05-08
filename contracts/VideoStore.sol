@@ -50,6 +50,10 @@ contract VideoStore  {
         comment[_unqiueId].push(Comment(_comment,_userAddress,block.timestamp));
     }
 
+    function _getComment(string memory _unqiueId) internal view returns (Comment[] memory)
+    {
+        return comment[_unqiueId];
+    }
     function _getAllVideos(address[] memory addr) internal view returns (Video[] memory){
         Video[] memory allVideos = new Video[](totalVideos);
         uint k=0;

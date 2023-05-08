@@ -41,4 +41,8 @@ contract UserActions is UserStore, VideoStore {
         return _getAllVideos(activeUsers);
     }
 
+    function getComment(string memory _unqiueId) public view returns (Comment[] memory){
+        return _getComment(_unqiueId);
+    }
+
 }
