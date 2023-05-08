@@ -5,24 +5,10 @@ import { create } from "ipfs-http-client";
 //import saveToIPFS from "../../../utils/saveToIPFS";
 import getWeb3 from "../../../utils/getWeb3";
 import useAction from "../../../build/contracts/UserActions.json";
+import { RouteMatcher } from "next/dist/server/future/route-matchers/route-matcher";
 
-
-export default function Upload() {
-  // Creating state for the input field
-  const [title, setTitle] = useState("");
-  const [description, setDescription] = useState("");
-  const [category, setCategory] = useState("");
-  const [location, setLocation] = useState("");
-  const [thumbnail, setThumbnail]: any = useState("");
-  const [video, setVideo]: any = useState("");
-
-  //  Creating a ref for thumbnail and video
-  const thumbnailRef = useRef();
-  const videoRef = useRef();
-
-
-  const finalAttempt = async () => {
-    console.log('idhar hich hai apun');
+export const getInstance = async () => {
+  console.log('idhar hich hai apun');
     const web3 = await getWeb3();
     console.log(web3);
     console.log('idhar hich hai apun');
@@ -37,9 +23,48 @@ export default function Upload() {
       (useAction as any).abi,
       deployedNetwork && deployedNetwork.address,
     );
-
     console.log("----", deployedNetwork, instance);
-    console.log("--video", video);
+    return {instance, accounts};
+}
+
+export default function Upload() {
+  // Creating state for the input field
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
+  const [category, setCategory] = useState("");
+  const [location, setLocation] = useState("");
+  const [thumbnail, setThumbnail]: any = useState("");
+  const [video, setVideo]: any = useState("");
+  const [showModal, setShowModal] = useState(false);
+  const [uploadStatus, setUploadStatus] = useState(false);
+
+
+  //  Creating a ref for thumbnail and video
+  const thumbnailRef = useRef();
+  const videoRef = useRef();
+
+  
+
+  const finalAttempt = async () => {
+    // console.log('idhar hich hai apun');
+    // const web3 = await getWeb3();
+    // console.log(web3);
+    // console.log('idhar hich hai apun');
+    // //   // Use web3 to get the user's accounts.
+    // const accounts = await web3.eth.getAccounts();
+   
+    // const networkId = await web3.eth.net.getId();
+    // console.log(networkId);
+    // const deployedNetwork = (useAction as any).networks[networkId];
+    // console.log("---",web3);
+    // const instance = new web3.eth.Contract(
+    //   (useAction as any).abi,
+    //   deployedNetwork && deployedNetwork.address,
+    // );
+
+    // console.log("----", deployedNetwork, instance);
+    // console.log("--video", video);
+    const {instance , accounts} = await getInstance();
     const ipfs = create({ url: "/ip4/127.0.0.1/tcp/5001" });
 
     const result = await ipfs.add(video);
@@ -48,6 +73,17 @@ export default function Upload() {
     console.log(accounts[0])
     const dataaa = await instance.methods.addVideo(title, description, ipfsHash).send({from: accounts[0]});
     console.log("final commit ment",dataaa);
+    if(dataaa.status) {
+       setShowModal(true);
+       setUploadStatus(true);
+      } else {
+        setShowModal(true);
+       setUploadStatus(false);
+      }
+  }
+
+
+  function RouteToListPage() {
 
   }
 
@@ -221,6 +257,54 @@ export default function Upload() {
           }}
         />
       </div>
+      {showModal ? (
+        <>
+          <div
+            className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none"
+          >
+            <div className="relative w-auto my-6 mx-auto max-w-3xl">
+              {/*content*/}
+              <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none">
+                {/*header*/}
+                <div className="flex items-start justify-between p-5 border-b border-solid border-slate-200 rounded-t">
+                  <h3 className="text-3xl font-semibold">
+                    Upload Status
+                  </h3>
+                  <button
+                    className="p-1 ml-auto bg-transparent border-0 text-black opacity-5 float-right text-3xl leading-none font-semibold outline-none focus:outline-none"
+                    onClick={() => setShowModal(false)}
+                  >
+                    <span className="bg-transparent text-black opacity-5 h-6 w-6 text-2xl block outline-none focus:outline-none">
+                      {}
+                    </span>
+                  </button>
+                </div>
+                {/*body*/}
+                <div className="relative p-6 flex-auto">
+                    {
+                      uploadStatus ? <p className="my-4 text-slate-500 text-lg leading-relaxed">Video Uploaded Successfully :)</p> : <p className="my-4 text-slate-500 text-lg leading-relaxed">Something went wrong try again :/</p>
+                    }
+                </div>
+                {/*footer*/}
+                <div className="flex items-center justify-end p-6 border-t border-solid border-slate-200 rounded-b">
+                  <button
+                    className="bg-emerald-500 text-white active:bg-emerald-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+                    type="button"
+                    onClick={() => {
+                      setShowModal(false)
+                      RouteToListPage();
+                    }}
+                  >
+                    Ok
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className="opacity-25 fixed inset-0 z-40 bg-black"></div>
+        </>
+      ) : null
+      }
     </div>
   );
 }
