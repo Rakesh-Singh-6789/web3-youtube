@@ -22,7 +22,11 @@
 //
 // const fs = require('fs');
 // const mnemonic = fs.readFileSync(".secret").toString().trim();
-
+const HDWalletProvider = require('@truffle/hdwallet-provider');
+//
+ const fs = require('fs');
+ const mnemonic = fs.readFileSync(".secret").toString().trim();
+ const apikey = fs.readFileSync(".apiKey").toString().trim();
 module.exports = {
   /**
    * Networks define how you connect to your ethereum client and let you set the
@@ -46,6 +50,16 @@ module.exports = {
       port: 7545,            // Standard Ethereum port (default: none)
       network_id: "5777",       // Any network (default: none)
     },
+    seoplia: {
+
+      provider: () => new HDWalletProvider (mnemonic, `https://sepolia.infura.io/v3/${apikey}`),
+      network_id: 11155111,
+      chain_ID: 11155111,
+      gas: 30000000,
+      confirmations: 2,
+      timeoutBlocks: 200,
+      skipDryRun: true
+    }
     // Another network with more advanced options...
     // advanced: {
     // port: 8777,             // Custom port
