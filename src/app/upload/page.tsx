@@ -248,7 +248,6 @@ export default function Upload() {
               />
             ) : (
               <>
-                {<Loader/>}
               <p className="text-[#9CA3AF]">Upload Video</p>
               </>
             )}
