@@ -7,6 +7,7 @@ import getWeb3 from "../../../utils/getWeb3";
 import useAction from "../../../build/contracts/UserActions.json";
 import { RouteMatcher } from "next/dist/server/future/route-matchers/route-matcher";
 import { useRouter } from "next/navigation";
+import Loader from "../listVideos/Loader";
 
 export const getInstance = async () => {
   console.log('idhar hich hai apun');
@@ -38,6 +39,7 @@ export default function Upload() {
   const [video, setVideo]: any = useState("");
   const [showModal, setShowModal] = useState(false);
   const [uploadStatus, setUploadStatus] = useState(false);
+  const [showLoader, setShowLoader] = useState(false);
 
 
   //  Creating a ref for thumbnail and video
@@ -66,6 +68,7 @@ export default function Upload() {
 
     // console.log("----", deployedNetwork, instance);
     // console.log("--video", video);
+    setShowLoader(true);
     const {instance , accounts} = await getInstance();
     const ipfs = create({ url: "/ip4/127.0.0.1/tcp/5001" });
 
@@ -134,7 +137,7 @@ export default function Upload() {
       <div className="flex-1 flex flex-col">
         <div className="mt-5 mr-10 flex  justify-end">
           <div className="flex items-center">
-            <button className="bg-transparent  text-[#9CA3AF] py-2 px-6 border rounded-lg  border-gray-600  mr-6">
+            <button onClick={()=>router.push('/listVideos')} className="bg-transparent  text-[#9CA3AF] py-2 px-6 border rounded-lg  border-gray-600  mr-6">
               Discard
             </button>
             <button
@@ -244,7 +247,10 @@ export default function Upload() {
                 className="h-full rounded-md"
               />
             ) : (
+              <>
+                {<Loader/>}
               <p className="text-[#9CA3AF]">Upload Video</p>
+              </>
             )}
           </div>
         </div>
@@ -255,6 +261,7 @@ export default function Upload() {
           accept={"video/*"}
           onChange={(e) => {
             setVideo(e.target.files[0]);
+
             console.log(e.target.files[0]);
           }}
         />
@@ -292,9 +299,9 @@ export default function Upload() {
                   <button
                     className="bg-emerald-500 text-white active:bg-emerald-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
                     type="button"
-                    onClick={() => {
+                    onClick={async () => {
+                      await RouteToListPage();
                       setShowModal(false)
-                      RouteToListPage();
                     }}
                   >
                     Ok

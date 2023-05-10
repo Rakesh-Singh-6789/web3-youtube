@@ -9,7 +9,7 @@ contract TTMToken is ERC20 {
     constructor() ERC20("To The Moon", "TTMToken") {
         _mint(msg.sender, 10000000);
         admin = msg.sender;
-        exchangeRate = 1000;
+        exchangeRate = 1;
     }
 
     function transfer(address recipient, uint256 amount) public override returns (bool) {

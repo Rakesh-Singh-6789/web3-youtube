@@ -12,6 +12,7 @@ import { Box, Stack, Typography } from "@mui/material";
 import Videos from "./Videos";
 import Navbar from "./Navbar";
 import Sidebar from "./Sidebar";
+import Header from "./Header";
 
 
 
@@ -35,11 +36,7 @@ export const getTokenInstance:any = async () => {
       return {instance, accounts};
   }
 
-const buyToken = async () => {
-    const { instance, accounts } = await getTokenInstance();
-    const buy = await instance.methods.mint().send({value:1,from:accounts[0]});
-    console.log("---buy",buy);
-}
+
 
 
 
@@ -57,7 +54,9 @@ export default function listVideos() {
       }, [balance]);
     
     return (
-        <div className="bg-gray-800 ">
+        <> 
+            <Header />
+            <div className="bg-gray-800 ">
             <Stack sx={{ flexDirection: { sx: "column", md: "row" } }}>
                 <Box sx={{ height: { sx: "auto", md: "92vh" }, borderRight: "1px solid #3d3d3d", px: { sx: 0, md: 2 } }}>
                     <Sidebar />
@@ -69,22 +68,11 @@ export default function listVideos() {
 
                 <Box className="mt-10" p={2} sx={{ overflowY: "auto", height: "90vh", flex: 2 }}>
                     <Typography variant="h4" fontWeight="bold" mb={2} sx={{ color: "white" }}>
-                        <span style={{ color: "#FC1503" }} >Videos</span>
                         <Videos />
-                        <div>
-                            <button onClick={()=>{
-                                buyToken();
-                            }}>
-                                Buy
-                            </button>   
-                            <span>{balance}
-                            </span>
-                        </div>
-                        
-
                     </Typography>
                 </Box>
             </Stack>
         </div>
+        </>
     );
 };

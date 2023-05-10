@@ -21,7 +21,7 @@ export default function index() {
         <h3 className="text-1xl mt-8 text-slate-900">Build <span className="line-through">with extreme patience with no panic attacks</span>
         </h3>
 
-        <h3 className="text-1xl mt-1 text-slate-900">on React.js, TailwindCSS, Solidity, IPFS, The Graph and Ethereum</h3>
+        <h3 className="text-1xl mt-1 text-slate-900">on React.js, TailwindCSS, Solidity, IPFS, and Ethereum</h3>
         <Link className="bg-blue-500 mt-4 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full" href="/dapp">
           -- App --
         </Link>

@@ -17,7 +17,7 @@ const Sidebar = () => (
         className="category-btn"
         onClick={() => {}}
         style={{
-          background: (category.name == 'All Videos' && "#FC1503" as any),
+          background: (category.name == 'All Videos' && "#2E3B55" as any),
           color: "white",
         }}
         key={category.name}
