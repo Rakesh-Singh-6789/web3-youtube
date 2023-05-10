@@ -50,8 +50,12 @@ export default function signUp() {
             <div className="flex-1 flex flex-col ms-80">
                 <div className="flex flex-col m-10  mt-10  lg:flex-row justify-center">
                     <div className="flex lg:w-3/4 flex-col ">
-
                         <div className="flex flex-row mt-20 w-[90%]  justify-between">
+                        <h3 className="text-slate-300 text-base leading-relaxed text-center">
+                            You are not registered. Please sign up.
+                          </h3>
+                        </div>
+                        <div className="flex flex-row w-[90%]  justify-between">
                             <div className="flex flex-col w-2/5    ">
                                 <label className="text-[#9CA3AF]  text-sm">Name</label>
                                 <input
