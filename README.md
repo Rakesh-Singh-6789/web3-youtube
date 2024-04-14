@@ -1,7 +1,5 @@
 # Decentralized YouTube
 
-## Implementation (Done from scratch, haven't referred any sources for starter code)
-
 1. Developed smart contracts to store UserInfo
 2. Developed smart contracts to store VideoData
 3. Developed smart contracts for capturing UserActions
