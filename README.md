@@ -1,11 +1,4 @@
-# CPSC-559-Decentralized YouTube
-## Team Members
-| Name                  | CWID      | email                            |
-|-----------------------|-----------|----------------------------------|
-| Shivansh Nathani      | 885187450 | shivansh_n@csu.fullerton.edu     |
-| Rakesh Singh          | 885205765 | rakeshsingh@csu.fullerton.edu    |
-| Sai Kumar Reddy Bandi | 885175166 | bsaikumarreddy@csu.fullerton.edu |
-| Shridhar Bhardwaj     | 885866160 | shree@csu.fullerton.edu          |
+# Decentralized YouTube
 
 ## Implementation (Done from scratch, haven't referred any sources for starter code)
 
